@@ -1,0 +1,172 @@
+openapi: '3.0.3'
+info:
+  title: Category Restful API
+  description: API spec for Category RESTful API
+  version: '1.0.0'
+servers:
+  - url: http://localhost:3000/api
+paths:
+  /categories:
+    get:
+      security:
+        - CategoryAuth: []
+      
+      tags:
+        - Category API
+      summary: list All Category
+      description: list all categories
+      responses:
+        '200':
+          description: success get all categories
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: number
+                  status:
+                    type: string
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/category"
+    post:
+      security:
+        - CategoryAuth: []
+      tags:
+        - Category API
+      description: create new category
+      summary: create new Category
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateOrUpdateCategory"
+                
+      responses:
+        '200':
+          description: succes create category
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: number
+                  status: 
+                    type: string
+                  data:
+                    $ref: "#/components/schemas/category"
+  /categories/{categoryId}:
+    get:
+      security:
+        - CategoryAuth: []
+      tags:
+        - Category API
+      summary: get categiry by id
+      description: get dategory by id
+      parameters:
+        - name: categoryId
+          required: true
+          in: path
+          description: Category ID
+          schema:
+            type: integer
+            minLength: 1
+            maxLength: 100
+      responses:
+        '200':
+          description: success get category
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: number
+                  status: 
+                    type: string
+                  data:
+                    $ref: "#/components/schemas/category"
+    put:
+      security:
+        - CategoryAuth: []
+      tags:
+        - Category API
+      summary: update category by id
+      description: update category by id
+      parameters:
+        - name: categoryId
+          in: path
+          required: true
+          description: category id
+          schema:
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateOrUpdateCategory"
+      responses:
+        '200':
+          description: success update category
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: number
+                  status: 
+                    type: string
+                  data:
+                    $ref: "#/components/schemas/category"
+    delete:
+      security:
+        - CategoryAuth: []
+      tags:
+        - Category API
+      summary: delete categiry by id
+      description: delete dategory by id
+      parameters:
+        - name: categoryId
+          required: true
+          in: path
+          description: Category ID
+          schema:
+            type: integer
+            minLength: 1
+            maxLength: 100
+      responses:
+        '200':
+          description: success delete category
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: number
+                  status: 
+                    type: string
+components:
+  securitySchemes:
+    CategoryAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+      description: Authentication for categpry API
+  schemas:
+    category:
+      type: object
+      properties:
+        id:
+          type: number
+        name:
+          type: string
+    CreateOrUpdateCategory:
+      type: object
+      properties:
+        name:
+          type: string
